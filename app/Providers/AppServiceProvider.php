@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -13,7 +14,23 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        /*$this->app->bind('Counter', function ($app) {
+            return new \App\Implementations\Counter();
+        });*/
+
+        /*$this->app->bind('Counter.new', function ($app) {
+            return new \App\Implementations\CounterNew();
+        });*/
+
+        /*$this->app->bind(
+            'App\Interfaces\CounterInterface',
+            'App\Implementations\Counter'
+        );*/
+
+        $this->app->bind(
+            'App\Interfaces\CounterInterface',
+            'App\Implementations\CounterNew'
+        );
     }
 
     /**
@@ -23,6 +40,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        View::share('age', '100');
+
+        View::composer(['about', 'test.about'], function ($view) {
+            $view->with('name', 'Adil');
+        });
     }
 }
