@@ -1,38 +1,33 @@
-<?php
-
-namespace App\Http\Controllers;
+<?php namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Interfaces\CounterInterface;
 
-class TestController extends BaseController
+class TestController extends Controller
 {
-    protected $request;
     protected $counter;
 
-    public function __construct(Request $request, CounterInterface $counter)
+    public function testGetMethod(Request $request)
     {
-        $this->request = $request;
-        $this->counter = $counter;
+
     }
 
-    public function about()
+    public function testPostMethod(Request $request)
     {
-        $name = $this->request->input('name');
 
-        return view('test.about', [
-            /*'name' => $name,
-            'age' => $request->input('age')*/
-        ]);
     }
 
-    public function digit()
+    public function testGetPostMethod(Request $request)
+    {
+        return 'OK';
+    }
+
+    public function redirectPage()
     {
 
-            $this->counter->increment();
-            $this->counter->increment();
+    }
 
-            echo $this->counter->getValue();
+    public function some()
+    {
 
     }
 }

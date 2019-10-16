@@ -11,28 +11,42 @@
 |
 */
 
-// 47:00
-
-Route::get('/', 'PostController@index')->name('index');
-
+Route::get('/', 'MainController@index')
+    ->name('site.main.index');
+Route::get('/about', 'MainController@about')
+    ->name('site.main.about');
+Route::get('/feedback', 'MainController@feedback')
+    ->name('site.main.feedback');
 Route::get('/post/{id}', 'PostController@post')
-    ->where('id', '[0-9]+')
-    ->name('post');
+    ->name('site.posts.post')
+    ->where('id', '[\d]+');
 
-Route::get('/add', 'PostController@add')->name('add');
+Route::get('/db', 'MainController@db')
+    ->name('site.main.db');
 
-Route::get('/edit', 'PostController@edit')->name('edit');
 
-Route::get('/delete', 'PostController@delete')->name('delete');
+/**
+ * Routes for register and login
+ */
+Route::get('/register', 'AuthController@register')
+    ->name('site.auth.register');
 
-Route::get('/sign-up', 'UserController@signUp')->name('sign-up');
+Route::post('/register', 'AuthController@registerPost')
+    ->name('site.auth.registerPost');
 
-Route::get('/sign-in', 'UserController@signIn')->name('sign-in');
+Route::get('/login', 'AuthController@login')
+    ->name('site.auth.login');
 
-/** ------------------------------------------------------------------------------------------------------ */
+Route::post('/login', 'AuthController@loginPost')
+    ->name('site.auth.loginPost');
 
-Route::get('/about', 'TestController@about')
-    ->name('about')
-    ->middleware('ChekAge');
+Route::get('/logout', 'AuthController@logout')
+    ->name('site.auth.logout');
 
-Route::get('/digit', 'TestController@digit')->name('digit');
+Route::group(['prefix' => 'test'], function () {
+    Route::any('/', 'TestController@index');
+    Route::get('/users', 'TestController@getUsers');
+    Route::get('/testOrm', 'TestController@testOrm');
+});
+
+Route::get('/home', 'HomeController@index')->name('home');
