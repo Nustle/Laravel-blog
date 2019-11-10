@@ -9,7 +9,7 @@
                 <div class="form-group">
                     <label for="inputEmail3" class="col-sm-3 control-label">Имя/Никнейм</label>
                     <div class="col-sm-9">
-                    <input type="text" class="form-control @error('name') is-invalid @enderror" id="inputEmail3" name="name" placeholder="Ivan Ivanov" value="">
+                    <input type="text" class="form-control @error('name') is-invalid @enderror" id="inputEmail3" name="name" placeholder="Ivan Ivanov" value="{{ old('name') }}">
                     </div>
 
                     @error('name')
@@ -19,7 +19,7 @@
                 <div class="form-group">
                     <label for="inputEmail3" class="col-sm-3 control-label">E-mail</label>
                     <div class="col-sm-9">
-                    <input type="text" class="form-control @error('email') is-invalid @enderror" id="inputEmail3" name="email" placeholder="user@domain.ru" value="">
+                    <input type="text" class="form-control @error('email') is-invalid @enderror" id="inputEmail3" name="email" placeholder="user@domain.ru" value="{{ old('email') }}">
                     </div>
 
                     @error('email')
@@ -29,7 +29,7 @@
                 <div class="form-group">
                     <label for="inputPassword3" class="col-sm-3 control-label">Пароль</label>
                     <div class="col-sm-9">
-                    <input type="password" class="form-control @error('password') is-invalid @enderror" id="" name="password" placeholder="Придумайте пароль" value="">
+                    <input type="password" class="form-control @error('password') is-invalid @enderror" id="" name="password" placeholder="Придумайте пароль" value="{{ old('password') }}">
                     </div>
 
                     @error('password')
@@ -39,7 +39,7 @@
                 <div class="form-group">
                     <label for="inputPassword3" class="col-sm-3 control-label">Подтверждение пароля</label>
                     <div class="col-sm-9">
-                    <input type="password" class="form-control @error('password_confirmation') is-invalid @enderror" id="" name="password_confirmation" placeholder="Пароль еще раз" value="">
+                    <input type="password" class="form-control @error('password_confirmation') is-invalid @enderror" id="" name="password_confirmation" placeholder="Пароль еще раз" value="{{ old('password_confirmation') }}">
                     </div>
 
                     @error('password_confirmation')
@@ -49,7 +49,7 @@
                 <div class="form-group">
                     <label for="inputPassword3" class="col-sm-3 control-label">Номер телефона</label>
                     <div class="col-sm-9">
-                    <input type="text" class="form-control @error('phone') is-invalid @enderror" id="" name="phone" placeholder="8 (999) 123-45-67" value="">
+                    <input type="text" class="form-control @error('phone') is-invalid @enderror" id="" name="phone" placeholder="8 (999) 123-45-67" value="{{ old('phone') }}">
                     </div>
 
                     @error('phone')

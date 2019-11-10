@@ -2,19 +2,23 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
+use App\Repositories\ActionRepository;
 
 class MainController extends Controller
 {
-    public function index()
+    public function index(ActionRepository $repository)
     {
-        $posts = [];
+        if (Auth::user()) {
+            $posts = $repository->getPostsIfAuth();
+        } else {
+            $posts = $repository->getPosts();
+        }
 
         return view('layouts.primary', [
             'page' => 'pages.main',
             'title' => 'Главная',
             'activeMenu' => 'main',
-            'posts' => $posts
+            'posts' => $posts,
         ]);
     }
 
@@ -40,10 +44,5 @@ class MainController extends Controller
             'content' => '<p>Привет, меня зовут Адиль Исмаилов и я веб разработчик!</p>',
             'activeMenu' => 'feedback',
         ]);
-    }
-
-    public function db(Request $request)
-    {
-
     }
 }
