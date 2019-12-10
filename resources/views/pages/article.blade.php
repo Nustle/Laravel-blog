@@ -10,12 +10,26 @@
                         <div class="col-xs-12  col-sm-8">
                             <div class="meta__info">
                                 <span class="meta__date"><span class="glyphicon glyphicon-calendar"></span> &nbsp; {{ ($post->created_at) }}</span>
+
+                                @can('update', $post)
+                                    <p>
+                                        <a href="{{ route('site.posts.updatePost', $post->id) }}">Редактировать</a>
+                                    </p>
+                                @endcan
+
+
+                                @can('delete', $post)
+                                    <form action="{{ route('site.posts.deletePost', $post->id) }}" method="POST">
+                                        {{ csrf_field() }}
+                                        <button type="submit" class="btn btn-primary">Удалить</button>
+                                    </form>
+                                @endcan
                             </div>
                         </div>
                         <div class="col-xs-12  col-sm-4">
                             <div class="comment-icon-counter-detail">
                                 <span class="glyphicon glyphicon-comment comment-icon"></span>
-                                <span class="comment-counter">10</span>
+                            <span class="comment-counter">{{ $post->comments_count }}</span>
                             </div>
                         </div>
                     </div>
@@ -35,7 +49,7 @@
             <div class="row">
                 <div class="col-xs-12  col-sm-6">
                     <div class="post-comments">
-                        <a class="btn btn-primary" href="single-post-without-image.html">Комментарии (3)</a>
+                        <a class="btn btn-primary" href="single-post-without-image.html">Комментарии ({{ $post->comments_count }})</a>
                     </div>
                 </div>
                 <div class="col-xs-12  col-sm-6">

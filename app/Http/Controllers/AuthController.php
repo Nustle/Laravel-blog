@@ -3,9 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\RegisterRequest;
-use App\Models\User;
+use App\Repositories\UserRepository;
 use Illuminate\Http\Request;
-use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
@@ -22,14 +21,9 @@ class AuthController extends Controller
         ]);
     }
 
-    public function registerPost(RegisterRequest $request)
+    public function registerPost(RegisterRequest $request, UserRepository $repository)
     {
-        User::create([
-            'name' => $request->input('name'),
-            'email' => $request->input('email'),
-            'password' => bcrypt($request->input('password')),
-            'phone' => $request->input('phone'),
-        ]);
+        $repository->registerUser($request);
 
         return redirect()->route('site.main.index');
     }
@@ -39,17 +33,19 @@ class AuthController extends Controller
         return view('layouts.secondary', [
             'page' => 'pages.login',
             'title' => 'Вход в систему',
-            'content' => '',
-            'activeMenu' => 'feedback',
+            'activeMenu' => 'login',
         ]);
     }
 
     public function loginPost(Request $request)
     {
         $credentials = $request->only('email', 'password');
+        $remember = $request->input('remember') ? true : false;
 
-        if (Auth::attempt($credentials, true)) {
+        if (Auth::attempt($credentials, $remember)) {
             return redirect()->route('site.main.index');
+        } else {
+            return redirect()->route('site.auth.login')->with('authError', 'custom.auth_error');
         }
     }
 

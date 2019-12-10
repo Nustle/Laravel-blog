@@ -15,14 +15,32 @@ Route::get('/', 'MainController@index')
     ->name('site.main.index');
 Route::get('/about', 'MainController@about')
     ->name('site.main.about');
+
 Route::get('/feedback', 'MainController@feedback')
     ->name('site.main.feedback');
+
 Route::get('/post/{slug}', 'PostController@post')
     ->name('site.posts.post');
+
+Route::post('/post/{slug}', 'PostController@deletePost')
+    ->name('site.posts.deletePost');
 
 Route::get('/db', 'MainController@db')
     ->name('site.main.db');
 
+Route::get('/create', 'PostController@create')
+    ->name('site.posts.create')
+    ->middleware('auth');
+
+Route::post('/create', 'PostController@createPost')
+    ->name('site.posts.createPost')
+    ->middleware('auth');
+
+Route::get('/update/{id}', 'PostController@update')
+    ->name('site.posts.update');
+
+Route::post('/update/{id}', 'PostController@updatePost')
+    ->name('site.posts.updatePost');
 
 /**
  * Routes for register and login

@@ -164,10 +164,12 @@ return [
     */
 
     'attributes' => [
+        'announce' => 'Анонс',
         'name' => '"Имя"',
         'username' => 'Никнейм',
         'email' => '"E-mail"',
         'first_name' => 'Имя',
+        'fulltext' => 'Текст статьи',
         'last_name' => 'Фамилия',
         'password' => '"Пароль"',
         'password_confirmation' => '"Подтверждение пароля"',
@@ -185,6 +187,7 @@ return [
         'hour' => 'Час',
         'minute' => 'Минута',
         'second' => 'Секунда',
+        'tagline' => 'Теглайн',
         'title' => 'Наименование',
         'content' => 'Контент',
         'description' => 'Описание',

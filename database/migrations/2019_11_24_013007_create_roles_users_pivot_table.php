@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateProfilesTable extends Migration
+class CreateRolesUsersPivotTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,20 +13,24 @@ class CreateProfilesTable extends Migration
      */
     public function up()
     {
-        Schema::create('profiles', function (Blueprint $table) {
-            $table->increments('id');
+        Schema::create('role_user', function (Blueprint $table) {
+            $table->integer('role_id')
+                ->unsigned()
+                ->nullable();
+            $table->foreign('role_id')
+                ->references('id')
+                ->on('roles')
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
 
-            $table->integer('user_id')->unsigned();
+            $table->integer('user_id')
+                ->unsigned()
+                ->nullable();
             $table->foreign('user_id')
                 ->references('id')
                 ->on('users')
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
-
-            $table->string('name', 50);
-            $table->date('birthday');
-            $table->string('phone', 50)->nullable();
-            $table->timestamps();
         });
     }
 
@@ -37,6 +41,6 @@ class CreateProfilesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('profiles');
+        Schema::dropIfExists('role_user');
     }
 }

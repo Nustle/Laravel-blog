@@ -29,6 +29,12 @@
                         <a href="{{ route('site.auth.register') }}" class="dropdown-toggle" data-toggle="dropdown">Регистрация</a>
                     </li>
 
+                    @can('create', App\Models\Post::class)
+                        <li class="create">
+                            <a href="{{ route('site.posts.create') }}" class="dropdown-toggle" data-toggle="dropdown">Новый пост</a>
+                        </li>
+                    @endcan
+
                     @if (Auth::check())
                         <li class="login">
                             <a href="{{ route('site.auth.logout') }}">Выход</a>

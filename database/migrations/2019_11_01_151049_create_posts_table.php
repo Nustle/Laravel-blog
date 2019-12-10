@@ -15,7 +15,6 @@ class CreatePostsTable extends Migration
     {
         Schema::create('posts', function (Blueprint $table) {
             $table->increments('id');
-
             $table->integer('user_id')->unsigned();
             $table->foreign('user_id')
                 ->references('id')
@@ -30,6 +29,7 @@ class CreatePostsTable extends Migration
             $table->text('announce')->nullable();
             $table->text('fulltext')->nullable();
             $table->integer('views_count')->nullable()->default(0);
+            $table->integer('comments_count')->nullable()->default(0);
             $table->boolean('is_active')->default(1);
             $table->boolean('is_favorite')->default(0);
             $table->timestamp('active_from')->nullable();

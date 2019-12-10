@@ -15,23 +15,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        /*$this->app->bind('Counter', function ($app) {
-            return new \App\Implementations\Counter();
-        });*/
-
-        /*$this->app->bind('Counter.new', function ($app) {
-            return new \App\Implementations\CounterNew();
-        });*/
-
-        /*$this->app->bind(
-            'App\Interfaces\CounterInterface',
-            'App\Implementations\Counter'
-        );*/
-
-        $this->app->bind(
-            'App\Interfaces\CounterInterface',
-            'App\Implementations\CounterNew'
-        );
+        //
     }
 
     /**
