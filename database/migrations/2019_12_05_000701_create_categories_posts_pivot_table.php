@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreatePostsSectionsPivotTable extends Migration
+class CreateCategoriesPostsPivotTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,22 +13,22 @@ class CreatePostsSectionsPivotTable extends Migration
      */
     public function up()
     {
-        Schema::create('post_section', function (Blueprint $table) {
+        Schema::create('category_post', function (Blueprint $table) {
+            $table->integer('category_id')
+                ->unsigned()
+                ->nullable();
+            $table->foreign('category_id')
+                ->references('id')
+                ->on('categories')
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
+
             $table->integer('post_id')
                 ->unsigned()
                 ->nullable();
             $table->foreign('post_id')
                 ->references('id')
                 ->on('posts')
-                ->onDelete('cascade')
-                ->onUpdate('cascade');
-
-            $table->integer('section_id')
-                ->unsigned()
-                ->nullable();
-            $table->foreign('section_id')
-                ->references('id')
-                ->on('sections')
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
         });
@@ -41,6 +41,6 @@ class CreatePostsSectionsPivotTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('post_section');
+        Schema::dropIfExists('category_post');
     }
 }

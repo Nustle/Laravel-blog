@@ -7,16 +7,6 @@ use Illuminate\Foundation\Http\FormRequest;
 class UpdateRequest extends FormRequest
 {
     /**
-     * Determine if the user is authorized to make this request.
-     *
-     * @return bool
-     */
-    public function authorize()
-    {
-        return true;
-    }
-
-    /**
      * Get the validation rules that apply to the request.
      *
      * @return array
@@ -24,6 +14,7 @@ class UpdateRequest extends FormRequest
     public function rules()
     {
         return [
+            'image' => 'mimes:jpeg,jpg,bmp,png|dimensions:min_width=100,min_height=200',
             'title' => 'required|min:3|max:255',
             'tagline' => 'required|min:3|max:255',
             'announce' => 'required|min:3',

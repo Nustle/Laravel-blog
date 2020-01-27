@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
-    <base href="{{ route('site.main.index') }}">
+    <base href="{{ route('site.post.index') }}">
     <link rel="shortcut icon" href="assets/images/favicon.png">
     <title>{{ $title }}</title>
 

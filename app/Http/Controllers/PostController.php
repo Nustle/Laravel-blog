@@ -2,29 +2,35 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Repositories\PostRepository;
 use App\Models\Post;
+use App\Models\Tag;
+use App\Models\Category;
 use App\Http\Requests\CreateRequest;
 use App\Http\Requests\UpdateRequest;
-use Illuminate\Support\Facades\Auth;
 
 class PostController extends Controller
 {
+    public function index(PostRepository $repository)
+    {
+        $posts = $repository->getPosts();
+
+        return view('layouts.primary', [
+            'page' => 'pages.main',
+            'title' => 'Главная',
+            'activeMenu' => 'main',
+            'posts' => $posts,
+        ]);
+    }
+
     public function post(string $slug, PostRepository $repository)
     {
-        $post = $repository->getPostViaSlug($slug);
+        $post = $repository->getPostBySlug($slug);
 
         return view('layouts.primary', [
             'page' => 'pages.article',
             'title' => 'Статья',
-            'image' => [
-                'path' => 'assets/images/dummy/about-5.jpg',
-                'alt' => 'User Avatar'
-            ],
             'post' => $post,
-            'comments' => $post->comments,
-            'tags' => $post->tags,
             'activeMenu' => 'post'
         ]);
     }
@@ -36,7 +42,9 @@ class PostController extends Controller
         return view('layouts.primary', [
             'page' => 'pages.create',
             'title' => 'Создание нового поста',
-            'activeMenu' => 'post'
+            'activeMenu' => 'post',
+            'categories' => Category::all(),
+            'tags' => Tag::all(),
         ]);
     }
 
@@ -46,7 +54,7 @@ class PostController extends Controller
 
         $repository->createPost($request);
 
-        return redirect()->route('site.main.index');
+        return redirect()->route('site.post.index');
     }
 
     public function update(int $id, PostRepository $repository)
@@ -59,6 +67,8 @@ class PostController extends Controller
             'page' => 'pages.update',
             'title' => 'Изменение поста',
             'post' => $post,
+            'categories' => Category::all(),
+            'tags' => Tag::all(),
             'activeMenu' => 'post'
         ]);
     }
@@ -71,7 +81,7 @@ class PostController extends Controller
 
         $repository->updatePost($id, $request);
 
-        return redirect()->route('site.main.index');
+        return redirect()->route('site.post.index');
     }
 
     public function deletePost(int $id, PostRepository $repository)
@@ -82,6 +92,6 @@ class PostController extends Controller
 
         $repository->deletePost($id);
 
-        return redirect()->route('site.main.index');
+        return redirect()->route('site.post.index');
     }
 }

@@ -18,7 +18,9 @@ class DatabaseSeeder extends Seeder
             CommentsTableSeeder::class,
             RolesTableSeeder::class,
             PermissionsTableSeeder::class,
-            SectionsTableSeeder::class,
+            CategoriesTableSeeder::class,
+            PostsCategoriesTableSeeder::class,
+            PostsTagsTableSeeder::class
         ]);
     }
 }

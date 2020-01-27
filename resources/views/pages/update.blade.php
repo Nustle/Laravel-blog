@@ -1,1 +1,1 @@
-@include('parts.update_form');
+@include('parts.forms.update_form');

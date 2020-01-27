@@ -69,7 +69,7 @@
             <h1>404 NOT FOUND</h1>
         </div>
         <div class="push-down-30">
-            <a href="{{ route('site.main.index') }}" style="cursor: pointer">Вернуться на главную</a>
+            <a href="{{ route('site.post.index') }}" style="cursor: pointer">Вернуться на главную</a>
         </div>
     </body>
 </html>

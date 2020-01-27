@@ -1,12 +1,19 @@
 <div class="boxed push-down-60">
     <div class="meta">
-        @if ($post->image)
-            <img class="wp-post-image" src="{{ $post->image }}" alt="Blog image" width="1138" height="493">
-        @endif
+        @isset ($post->image)
+            <img class="wp-post-image" src="{{ asset('storage/' . $post->image) }}">
+        @endisset
         <div class="row">
             <div class="col-xs-12  col-sm-10  col-sm-offset-1  col-md-8  col-md-offset-2">
                 <div class="meta__container--without-image">
                     <div class="row">
+                        <div class="col-xs-12  col-sm-7">
+                            <div class="meta__info">
+                                @foreach ($post->categories as $category)
+                                    <a href="{{ route('site.post.byCategory', $category->name) }}">{{ $category->name }}</a>
+                                @endforeach
+                            </div>
+                        </div>
                         <div class="col-xs-12  col-sm-8">
                             <div class="meta__info">
                                 <span class="meta__date"><span class="glyphicon glyphicon-calendar"></span> &nbsp; {{ ($post->created_at) }}</span>
@@ -49,7 +56,7 @@
             <div class="row">
                 <div class="col-xs-12  col-sm-6">
                     <div class="post-comments">
-                        <a class="btn btn-primary" href="single-post-without-image.html">Комментарии ({{ $post->comments_count }})</a>
+                        <a class="btn btn-primary" href="single-post-without-image.html">Комментарии ({{ $post->comments->count() }})</a>
                     </div>
                 </div>
                 <div class="col-xs-12  col-sm-6">
@@ -63,12 +70,18 @@
             <div class="row">
                 <div class="col-xs-12 col-sm-12">
                     <div class="comments">
-                        <h6>Комментарии</h6>
+                        @can('create', App\Models\Comment::class)
+                            <form action="{{ route('site.comment.create', $post->slug) }}" method="POST">
+                                {{ csrf_field() }}
+                                <textarea rows="6" type="text" placeholder="Написать комментарий" class="comment-written" name="text">{{ old('text') }}</textarea> <br>
+                                <button type="submit" class="btn btn-primary">Добавить</button>
+                            </form>
+                        @endcan
                         <hr>
                         <div class="comment clearfix">
-                            @foreach ($comments as $comment)
+                            @foreach ($post->comments as $comment)
                                 <div class="comment-avatar pull-left">
-                                    <img src="{{ $image['path'] }}" alt="{{ $image['alt'] }}" class="img-circle comment-avatar-image">
+                                    <img src="assets/images/dummy/about-1.jpg" class="img-circle comment-avatar-image">
                                 </div>
                                 <div class="comment-body clearfix">
                                     <div class="comment-header">
@@ -89,8 +102,8 @@
                     <div class="tags">
                         <h6>Тэги</h6>
                         <hr>
-                        @forelse ($tags as $tag)
-                            <a href="#" class="tags__link">{{ $tag->name }}</a>
+                        @forelse ($post->tags as $tag)
+                            <a href="{{ route('site.post.byTag', $tag->name) }}" class="tags__link">{{ $tag->name }}</a>
                         @empty
                             <p>Тегов для статьи не найдено</p>
                         @endforelse

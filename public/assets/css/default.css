@@ -5724,7 +5724,7 @@ font-family: 'Roboto Condensed', sans-serif;
 }
 
 .widget-posts .widget-posts__time {
-font-family: 'Roboto Condensed', sans-serif;
+    font-family: 'Roboto Condensed', sans-serif;
     color: #9a9a90
 }
 
@@ -5732,7 +5732,7 @@ font-family: 'Roboto Condensed', sans-serif;
     list-style: none;
     padding: 0;
     color: #9a9a90;
-font-family: 'Roboto Condensed', sans-serif;
+    font-family: 'Roboto Condensed', sans-serif;
     font-weight: 700
 }
 
@@ -7005,3 +7005,30 @@ body {
     0 0 8px rgba(184, 38, 38, 0.6)
 }
 
+.comment-written {
+   border: 2px solid #dadada;
+   width: 84.8%;
+   padding: 10px 30px;
+   vertical-align: bottom;
+   box-sizing: border-box;
+   margin-bottom: 10px;
+   resize: none;
+}
+
+.about-title {
+    font-size: 20px;
+}
+
+.about-name {
+    text-decoration: none;
+}
+
+.about-text {
+    font-size: 16px;
+}
+
+.widget-posts__views {
+    font-family: 'Roboto Condensed', sans-serif;
+    color: #9a9a90;
+    font-size: 16px;
+}

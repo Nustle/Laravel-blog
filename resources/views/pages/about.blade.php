@@ -1,1 +1,1 @@
-@include('parts.blank')
+@include('widgets.about')

@@ -6,9 +6,31 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Post;
 use Carbon\Carbon;
 use Illuminate\Support\Str;
+use App\Repositories\CategoryRepository;
+use App\Repositories\TagRepository;
 
 class PostRepository
 {
+    /**
+     * CategoryRepository object.
+     *
+     * @var App\Repositories\CategoryRepository
+     */
+    protected $categoryRepository;
+
+    /**
+     * CategoryRepository object.
+     *
+     * @var App\Repositories\TagRepository
+     */
+    protected $tagRepository;
+
+    public function __construct(CategoryRepository $categoryRepository, TagRepository $tagRepository)
+    {
+        $this->categoryRepository = $categoryRepository;
+        $this->tagRepository = $tagRepository;
+    }
+
     /**
      * Returns all posts with ordering.
      *
@@ -16,7 +38,8 @@ class PostRepository
      */
     public function getPosts()
     {
-        return Post::where('is_active', 1)
+        return Post::with(['categories'])
+            ->where('is_active', true)
             ->orderBy('created_at', 'desc')
             ->get();
     }
@@ -27,7 +50,7 @@ class PostRepository
      * @param string $slug
      * @return App\Models\Post
      */
-    public function getPostViaSlug(string $slug)
+    public function getPostBySlug(string $slug)
     {
         return Post::where('slug', $slug)
             ->firstOrFail();
@@ -41,20 +64,20 @@ class PostRepository
      */
     public function getPostById(int $id)
     {
-        return Post::where('id', $id)
-            ->firstOrFail();
+        return Post::findOrFail($id);
     }
 
     /**
      * Creates new post.
      *
      * @param CreateRequest $request
-     * @return mixed
+     * @return void
      */
     public function createPost($request)
     {
-        return Post::create([
+        $post = Post::create([
             'user_id' => Auth::user()->id,
+            'image' => insertImage($request),
             'title' => $request->input('title'),
             'slug' => Str::slug($request->input('title'), '-'),
             'tagline' => $request->input('tagline'),
@@ -62,6 +85,8 @@ class PostRepository
             'fulltext' => $request->input('fulltext'),
             'active_from' => Carbon::now()
         ]);
+
+        return $this->insertPivot($post, $request->input('category'), $request->input('tag'));
     }
 
     /**
@@ -69,28 +94,54 @@ class PostRepository
      *
      * @param int $id
      * @param UpdateRequest $request
-     * @return mixed
+     * @return void
      */
     public function updatePost(int $id, $request)
     {
-        return Post::findOrFail($id)
-            ->update([
+        $post = $this->getPostById($id);
+
+        return [
+            deleteImage($post->image),
+            $post->update([
+                'image' => insertImage($request),
                 'title' => $request->input('title'),
                 'tagline' => $request->input('tagline'),
                 'announce' => $request->input('announce'),
                 'fulltext' => $request->input('fulltext')
-            ]);
+            ]),
+            $this->insertPivot($post, $request->input('category'), $request->input('tag'))
+        ];
     }
 
     /**
      * Deletes post with slug passed.
      *
      * @param int $id
-     * @return mixed
+     * @return void
      */
     public function deletePost(int $id)
     {
-        return Post::where('id', $id)
-            ->delete();
+       $post = $this->getPostById($id);
+
+       return [
+           deleteImage($post->image),
+           $post->delete()
+       ];
+    }
+
+    /**
+     * Inserts foreign keys into pivot table.
+     *
+     * @param App\Models\Post $post
+     * @param string $category
+     * @param string $tag
+     * @return void
+     */
+    public function insertPivot($post, string $category, string $tag)
+    {
+        return [
+            $this->categoryRepository->insertPivotCategory($post, $category),
+            $this->tagRepository->insertPivotTag($post, $tag)
+        ];
     }
 }

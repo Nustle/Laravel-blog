@@ -11,22 +11,47 @@
 |
 */
 
-Route::get('/', 'MainController@index')
-    ->name('site.main.index');
+/**
+ * Route for MainController.
+ *
+ * @return App\Http\Controllers\MainController
+ */
 Route::get('/about', 'MainController@about')
     ->name('site.main.about');
 
 Route::get('/feedback', 'MainController@feedback')
     ->name('site.main.feedback');
 
-Route::get('/post/{slug}', 'PostController@post')
-    ->name('site.posts.post');
+Route::post('/feedback', 'MainController@feedbackPost')
+    ->name('site.main.feedbackPost');
 
-Route::post('/post/{slug}', 'PostController@deletePost')
-    ->name('site.posts.deletePost');
 
 Route::get('/db', 'MainController@db')
     ->name('site.main.db');
+
+/**
+ * Route for PostController.
+ *
+ * @return App\Http\Controllers\PostController
+ */
+
+Route::group(['prefix' => 'post'], function () {
+    Route::get('/{slug}', 'PostController@post')
+        ->name('site.posts.post')
+        ->where('slug', '[\:0-9A-Za-z\-]+');
+
+    Route::post('/{id}', 'PostController@deletePost')
+        ->name('site.posts.deletePost')
+        ->where('id', '[0-9]+');
+
+    Route::get('/tag/{tag}', 'TagController@listByTag')
+        ->name('site.post.byTag')
+        ->where('tag', '.+');
+
+    Route::get('/category/{category}', 'CategoryController@listByCategory')
+        ->name('site.post.byCategory')
+        ->where('category', '.+');
+});
 
 Route::get('/create', 'PostController@create')
     ->name('site.posts.create')
@@ -42,8 +67,13 @@ Route::get('/update/{id}', 'PostController@update')
 Route::post('/update/{id}', 'PostController@updatePost')
     ->name('site.posts.updatePost');
 
+Route::get('/', 'PostController@index')
+    ->name('site.post.index');
+
 /**
- * Routes for register and login
+ * Route for AuthController.
+ *
+ * @return App\Http\Controllers\AuthController
  */
 Route::get('/register', 'AuthController@register')
     ->name('site.auth.register');
@@ -60,10 +90,11 @@ Route::post('/login', 'AuthController@loginPost')
 Route::get('/logout', 'AuthController@logout')
     ->name('site.auth.logout');
 
-Route::group(['prefix' => 'test'], function () {
-    Route::any('/', 'TestController@index');
-    Route::get('/users', 'TestController@getUsers');
-    Route::get('/testOrm', 'TestController@testOrm');
-});
-
-Route::get('/home', 'HomeController@index')->name('home');
+/**
+ * Route for CommentController.
+ *
+ * @return App\Http\Controllers\CommentController
+ */
+Route::post('post/{slug}', 'CommentController@create')
+    ->name('site.comment.create')
+    ->where('slug', '[\:0-9A-Za-z\-]+');

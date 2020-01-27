@@ -6,8 +6,6 @@ use App\Http\Requests\RegisterRequest;
 use App\Repositories\UserRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
 {
@@ -25,7 +23,7 @@ class AuthController extends Controller
     {
         $repository->registerUser($request);
 
-        return redirect()->route('site.main.index');
+        return redirect()->route('site.post.index');
     }
 
     public function login()
@@ -43,7 +41,7 @@ class AuthController extends Controller
         $remember = $request->input('remember') ? true : false;
 
         if (Auth::attempt($credentials, $remember)) {
-            return redirect()->route('site.main.index');
+            return redirect()->route('site.post.index');
         } else {
             return redirect()->route('site.auth.login')->with('authError', 'custom.auth_error');
         }
@@ -53,6 +51,6 @@ class AuthController extends Controller
     {
         Auth::logout();
 
-        return redirect()->route('site.main.index');
+        return redirect()->route('site.post.index');
     }
 }

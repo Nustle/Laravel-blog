@@ -1,7 +1,7 @@
 <header class="header push-down-45">
     <div class="container">
         <div class="logo pull-left">
-            <a href="{{ route('site.main.index') }}">
+            <a href="{{ route('site.post.index') }}">
                 <img src="assets/images/logo.png" alt="Logo" width="352" height="140">
             </a>
         </div>
@@ -17,7 +17,7 @@
             <div class="collapse navbar-collapse" id="readable-navbar-collapse">
                 <ul class="navigation">
                     <li class="main">
-                        <a href="{{ route('site.main.index') }}" class="dropdown-toggle" data-toggle="dropdown">Главная</a>
+                        <a href="{{ route('site.post.index') }}" class="dropdown-toggle" data-toggle="dropdown">Главная</a>
                     </li>
                     <li class="about">
                         <a href="{{ route('site.main.about') }}" class="dropdown-toggle" data-toggle="dropdown">Кто я?</a>
